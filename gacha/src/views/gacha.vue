@@ -6,7 +6,12 @@
 
 <script setup>
 
+let data = await supabase.from('gachaItems').select('*')
+console.log(data)
+
 </script>
+
+
 
 <style lang="scss" scoped>
 
