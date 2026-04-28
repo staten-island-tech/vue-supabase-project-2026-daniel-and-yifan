@@ -6,8 +6,26 @@
 
 <script setup>
 
-let data = await supabase.from('gachaItems').select('*')
-console.log(data)
+import { supabase } from '@/superbase';
+import { ref, onMounted } from 'vue';
+
+const collGachaItems = ref([])
+const error = ref(null)
+
+onMounted(async () => {
+  let { data: gachaItems, error: err } = await supabase
+    .from('gachaItems')
+    .select('*')
+  if (err) {
+    error.value = err.message
+  } else {
+    console.log(gachaItems)
+    collGachaItems.value = gachaItems
+  }
+})
+
+console.log(collGachaItems)
+
 
 </script>
 
