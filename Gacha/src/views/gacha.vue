@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>john</h1>
+        <h1 @click="">roll</h1>
     </div>
 </template>
 
@@ -23,6 +24,16 @@ onMounted(async () => {
     collGachaItems.value = gachaItems
   }
 })
+
+function roll(min, max){
+  let random = Math.floor(Math.random() * (max - min + 1)) + min;
+  return random
+}
+
+function doAGachaRoll(){
+  
+}
+
 
 console.log(collGachaItems)
 
