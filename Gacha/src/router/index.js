@@ -1,5 +1,6 @@
 import Gacha from '@/views/gacha.vue'
 import Home from '@/views/home.vue'
+import Login from '@/views/login.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/Gacha',
       name: 'gacha',
       component: Gacha,
+    },
+    {
+      path: '/Login',
+      name: 'login',
+      component: Login,
     }
   ],
 })
