@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+        <p></p>
     </div>
 </template>
 
@@ -12,15 +12,12 @@ const email = ref('')
 const password = ref('')
 
 onMounted(async function handleLogin() {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
-  })
+  const { data: profileInfo, error } = await supabase.from("profile").select("email")
 
   if (error) {
     console.error('Error logging in:', error.message)
   } else {
-    console.log('Logged in successfully:', data.user)
+    console.log('Logged in successfully:', profileInfo)
   }
 })
 </script>
