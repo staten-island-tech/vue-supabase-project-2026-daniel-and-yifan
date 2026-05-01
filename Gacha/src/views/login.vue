@@ -15,7 +15,11 @@ const email = ref('')
 
 onMounted(async function handleLogin() {
   const { data: profileInfo, error } = await supabase.from("profile").select("email").eq('email',email.value).single()
-
+    if (error) {
+    console.error('Error logging in:', error.message)
+  } else {
+    console.log('Logged in successfully:', profileInfo)
+  }
     if (error || !data) {
     console.error('Email not found')
     return
