@@ -10,12 +10,6 @@
 import { supabase } from '@/supabase';
 import { ref, onMounted } from 'vue';
 
-const collGachaItems = ref({
-  horrible : [],
-  good : [],
-  yeah : [],
-  great : [],
-})
 const error = ref(null)
 
 async function grabItems(select, equal) {
@@ -33,7 +27,7 @@ async function grabItems(select, equal) {
     error.value = err.message
   } else {
     console.log(gachaItems)
-    collGachaItems.value = gachaItems
+    return gachaItems
   }
 }
 
@@ -42,22 +36,53 @@ function roll(min, max){
   return random
 }
 
-function doAGachaRoll(){
-  let rngRoll = roll(1, 100)
-  if (rngRoll < 40) {
-    let items = grabItems(undefined, "horrible")
-    console.log("horrible", items)
-  } else if (rngRoll < 70) {
-    console.log("Good enough")
-  } else if (rngRoll < 90) {
-    console.log("Yeah")
-  } else {
-    console.log("Great")
-  }
+const rarityMessages = {
+  ["horrible"] : 
+    [
+      "God awful",
+      "Gamble better",
+      "HORRID"
+    ],
+  ["good"] : 
+    [
+      "Good enough",
+      "Servicable",
+      "Ok"
+    ],
+  ["yeah"] : 
+    [
+      "ok yeah actually that's pretty good",
+      "good job",
+      "YEAH"
+    ],
+  ["great"] : 
+    [
+      "boy if this game had microtransactions...",
+      "if only the IRS were real",
+      "gimme a fist bump right here"
+    ]
 }
 
+async function doAGachaRoll(){
+  let rngRoll = roll(1, 100)
+  let rarity
+  let items
+  if (rngRoll < 40) {
+    rarity = "horrible"
+  } else if (rngRoll < 70) {
+    rarity = "good"
+  } else if (rngRoll < 90) {
+    rarity = "yeah"
+  } else {
+    rarity = "great"
+  }
 
-console.log(collGachaItems)
+  items = await grabItems(undefined, rarity)
+
+  console.log(items, rarity, items.length)
+  let weaponRoll = roll(0, items.length - 1)
+  console.log(items[weaponRoll])
+}
 
 
 </script>
