@@ -1,6 +1,8 @@
 <template>
     <div>
-        <p></p>
+        <form>
+          
+        </form>
     </div>
 </template>
 
@@ -9,7 +11,6 @@ import { supabase } from '@/superbase';
 import { ref, onMounted } from 'vue';
 
 const email = ref('')
-const password = ref('')
 
 onMounted(async function handleLogin() {
   const { data: profileInfo, error } = await supabase.from("profile").select("email")
