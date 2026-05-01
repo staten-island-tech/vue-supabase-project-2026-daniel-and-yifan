@@ -28,5 +28,3 @@ onMounted(async function handleLogin() {
 <style lang="scss" scoped>
 
 </style>
-
-
