@@ -1,6 +1,7 @@
 <template>
     <div>
-
+        <img src="{{ img }}" alt="">
+        <h2>{{ weaponName }}</h2>
     </div>
 </template>
 
@@ -8,7 +9,8 @@
 
 const props = defineProps({
     weaponName: {
-        type
+        type: String,
+        required: true
     },
     img: {
         type: Object,
