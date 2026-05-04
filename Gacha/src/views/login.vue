@@ -13,20 +13,15 @@ import { ref, onMounted } from 'vue';
 
 const email = ref('')
 
-onMounted(async function handleLogin() {
+async function handleLogin() {
   const { data: profileInfo, error } = await supabase.from("profile").select("email").eq('email',email.value).single()
-    if (error) {
-    console.error('Error logging in:', error.message)
-  } else {
-    console.log('Logged in successfully:', profileInfo)
-  }
-    if (error || !data) {
+    if (error || !profileInfo) {
     console.error('Email not found')
     return
   }
 
-  console.log('Login success:', data)
-})
+  console.log('Login success:', profileInfo)
+}
 </script>
 
 <style lang="scss" scoped>
