@@ -1,11 +1,10 @@
 <template>
     <div>
-        <img src="{{ img }}" alt="">
         <h2>{{ weaponName }}</h2>
     </div>
 </template>
 
-<script>
+<script setup>
 
 const props = defineProps({
     weaponName: {
@@ -13,7 +12,7 @@ const props = defineProps({
         required: true
     },
     img: {
-        type: Object,
+        type: String,
         required: true
     },
     rarity: {
@@ -22,9 +21,13 @@ const props = defineProps({
     },
     flavorText: {
         type: String,
-        required: false
+        required: true
     }
 })
+
+console.log(props)
+
+var itemImg = `gacha/src/Components/${props.img}`
 </script>
 
 <style lang="css" scoped>
