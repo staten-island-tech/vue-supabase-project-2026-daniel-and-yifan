@@ -1,10 +1,15 @@
 <template>
-    <div>
-        <h2>{{ weaponName }}</h2>
+    <div id ="mainContainer">
+        <h1 class="item" id="itemName">{{ weaponName }}</h1>
+        <h2 class="item" id="rarity">{{ rarity }}</h2>
+        <h2 class="item" id="flavor">{{ flavorText }}</h2>
+        <img id="itemImg" :src="imgDir" alt=""/>
     </div>
 </template>
 
 <script setup>
+
+import { onMounted, ref } from 'vue';
 
 const props = defineProps({
     weaponName: {
@@ -25,11 +30,27 @@ const props = defineProps({
     }
 })
 
-console.log(props)
+var imgDir = ref()
 
-var itemImg = `gacha/src/Components/${props.img}`
+onMounted(()=> {
+    imgDir.value = `./GachaItemsIMG/${props.img}`
+})
+
 </script>
 
 <style lang="css" scoped>
 
+#mainContainer{
+    margin: auto;
+    width:  50%;
+}
+#itemImg{
+    width: 70%;
+    display: block;
+    margin: auto;
+}
+.item{
+    margin: auto;
+    width: fit-content;
+}
 </style>

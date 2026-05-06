@@ -1,7 +1,6 @@
 <template>
     <div>
-        <h1>john</h1>
-        <h1 @click="doAGachaRoll()">roll</h1>
+        <h1 id="roll" @click="doAGachaRoll()">roll</h1>
         <GachaFormat v-show="display" :weaponName="`John`" :img="`mace_1star.png`" :flavorText="`why`" :rarity="`john`"/>
     </div>
 </template>
@@ -13,10 +12,10 @@ import { supabase } from '@/supabase';
 import { ref, onMounted } from 'vue';
 import GachaFormat from '@/Components/GachaFormat.vue';
 
-const image = "mace_1star.png"
+const image = ref()
 
 const error = ref(null)
-const display = false
+const display = true
 
 async function grabItems(select, equal) {
   if (!select) {
@@ -95,6 +94,11 @@ async function doAGachaRoll(){
 
 
 
-<style lang="scss" scoped>
-
+<style lang="css" scoped>
+#roll{
+  size: 10%;
+  margin:0%;
+  padding: 0;
+  position: absolute;
+}
 </style>
