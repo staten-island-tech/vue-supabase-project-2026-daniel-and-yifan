@@ -9,7 +9,7 @@
 
 <script setup>
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 
 const props = defineProps({
     weaponName: {
@@ -32,8 +32,9 @@ const props = defineProps({
 
 var imgDir = ref()
 
-onMounted(()=> {
+watchEffect(()=> {
     imgDir.value = `./GachaItemsIMG/${props.img}`
+    console.log(img)
 })
 
 </script>

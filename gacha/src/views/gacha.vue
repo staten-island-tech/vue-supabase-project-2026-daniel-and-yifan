@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 id="roll" @click="doAGachaRoll()">roll</h1>
-        <GachaFormat v-show="display" :weaponName="`John`" :img="`mace_1star.png`" :flavorText="`why`" :rarity="`john`"/>
+        <GachaFormat v-if="display" :weaponName="`John`" :img="image" :flavorText="`why`" :rarity="`john`" :key="image"/>
     </div>
 </template>
 
@@ -15,7 +15,7 @@ import GachaFormat from '@/Components/GachaFormat.vue';
 const image = ref()
 
 const error = ref(null)
-const display = true
+var display = ref(false)
 
 async function grabItems(select, equal) {
   if (!select) {
@@ -87,6 +87,10 @@ async function doAGachaRoll(){
   console.log(items, rarity, items.length)
   let weaponRoll = roll(0, items.length - 1)
   console.log(items[weaponRoll])
+  image.value = items[weaponRoll].imglink
+  if (image.value) {
+    display.value = true
+  }
 }
 
 
