@@ -1,8 +1,8 @@
 <template>
     <div id ="mainContainer">
-        <h1 class="item" id="itemName">{{ weaponName }}</h1>
-        <h2 class="item" id="rarity">{{ rarity }}</h2>
-        <h2 class="item" id="flavor">{{ flavorText }}</h2>
+        <h1 class="item" id="itemName">{{ props.weaponName }}</h1>
+        <h2 class="item" id="rarity">{{ props.rarity }}</h2>
+        <h2 class="item" id="flavor">{{ props.flavorText }}</h2>
         <img id="itemImg" :src="imgDir" alt=""/>
     </div>
 </template>
@@ -34,7 +34,7 @@ var imgDir = ref()
 
 watchEffect(()=> {
     imgDir.value = `./GachaItemsIMG/${props.img}`
-    console.log(img)
+    console.log(props.img)
 })
 
 </script>
@@ -53,5 +53,6 @@ watchEffect(()=> {
 .item{
     margin: auto;
     width: fit-content;
+    text-align: center;
 }
 </style>

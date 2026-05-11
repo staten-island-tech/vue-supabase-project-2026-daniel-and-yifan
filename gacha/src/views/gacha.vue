@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 id="roll" @click="doAGachaRoll()">roll</h1>
-        <GachaFormat v-if="display" :weaponName="`John`" :img="image" :flavorText="`why`" :rarity="`john`" :key="image"/>
+        <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :key="itemData.name"/>
     </div>
 </template>
 
@@ -12,7 +12,12 @@ import { supabase } from '@/supabase';
 import { ref, onMounted } from 'vue';
 import GachaFormat from '@/Components/GachaFormat.vue';
 
-const image = ref()
+const itemData = ref({
+  image : null,
+  name : null,
+  flavor : null,
+  rarity : null
+})
 
 const error = ref(null)
 var display = ref(false)
@@ -87,10 +92,18 @@ async function doAGachaRoll(){
   console.log(items, rarity, items.length)
   let weaponRoll = roll(0, items.length - 1)
   console.log(items[weaponRoll])
-  image.value = items[weaponRoll].imglink
-  if (image.value) {
+  let item = items[weaponRoll]
+  if (item.imglink && item.item_name && item.rarity) {
+    itemData.value.image = item.imglink
+    itemData.value.name = item.item_name
+    itemData.value.rarity = item.rarity
+
+    let flavorRoll = roll(0, rarityMessages[item.rarity].length - 1)
+    itemData.value.flavor = rarityMessages[item.rarity][flavorRoll]
+    console.log(itemData.value)
+
     display.value = true
-  }
+  } 
 }
 
 
