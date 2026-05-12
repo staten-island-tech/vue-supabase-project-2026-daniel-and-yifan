@@ -93,17 +93,20 @@ async function doAGachaRoll(){
   let weaponRoll = roll(0, items.length - 1)
   console.log(items[weaponRoll])
   let item = items[weaponRoll]
-  if (item.imglink && item.item_name && item.rarity) {
-    itemData.value.image = item.imglink
-    itemData.value.name = item.item_name
-    itemData.value.rarity = item.rarity
 
+  if (item.imglink !== null) {
+    itemData.value.image = item.imglink
+  }
+  if (item.item_name!==null){
+    itemData.value.name = item.item_name
+  }
+  if (item.rarity!== null) {
+    itemData.value.rarity = item.rarity
     let flavorRoll = roll(0, rarityMessages[item.rarity].length - 1)
     itemData.value.flavor = rarityMessages[item.rarity][flavorRoll]
-    console.log(itemData.value)
-
-    display.value = true
-  } 
+  }
+  console.log(itemData.value)
+  display.value = true
 }
 
 

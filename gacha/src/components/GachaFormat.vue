@@ -33,8 +33,10 @@ const props = defineProps({
 var imgDir = ref()
 
 watchEffect(()=> {
-    imgDir.value = `./GachaItemsIMG/${props.img}`
-    console.log(props.img)
+    if (props.img) {
+        imgDir.value = `./GachaItemsIMG/${props.img}`
+        console.log(props.img)
+    }
 })
 
 </script>
