@@ -1,8 +1,9 @@
 <template>
-    <div>
-        <h1 id="roll" @click="doAGachaRoll()">roll</h1>
-        <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :key="itemData.name"/>
-    </div>
+  
+  <div id="gambleContainer">
+    <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :key="itemData.name"/>
+    <h1 id="roll" @click="doAGachaRoll()">roll</h1>
+  </div>
 </template>
 
 <script setup>
@@ -11,6 +12,7 @@
 import { supabase } from '@/supabase';
 import { ref, onMounted } from 'vue';
 import GachaFormat from '@/Components/GachaFormat.vue';
+
 
 const itemData = ref({
   image : null,
@@ -115,10 +117,41 @@ async function doAGachaRoll(){
 
 
 <style lang="css" scoped>
+
 #roll{
   size: 10%;
-  margin:0%;
   padding: 0;
-  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  width: 15rem;
+  height: 5rem;
+  border: solid;
+  text-align: center;
+  border-radius: 10px;
+  border-width: 7px;
+  line-height: 5rem;
+  background-color: rgb(255, 155, 193);
+  border-color: rgb(223, 130, 226);
+}
+#gambleContainer{
+  width: 60%;
+  margin: auto;
+  margin-top: 3rem;
+  height: 50rem;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+#app {
+  background-color: #ffbed7;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e87171' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+}
+template {
+  background-color: #ffbed7;
+}
+html {
+  background-color: white;
+}
+body {
+  background-color: brown;
 }
 </style>

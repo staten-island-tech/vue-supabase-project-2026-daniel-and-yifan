@@ -2,8 +2,8 @@
     <div id ="mainContainer">
         <h1 class="item" id="itemName">{{ props.weaponName }}</h1>
         <h2 class="item" id="rarity">{{ props.rarity }}</h2>
-        <h2 class="item" id="flavor">{{ props.flavorText }}</h2>
         <img id="itemImg" :src="imgDir" alt=""/>
+        <h1 class="item" id="flavor">{{ props.flavorText }}</h1>
     </div>
 </template>
 
@@ -54,7 +54,9 @@ watchEffect(()=> {
 }
 .item{
     margin: auto;
+    margin-top: 5px;
     width: fit-content;
     text-align: center;
 }
+
 </style>
