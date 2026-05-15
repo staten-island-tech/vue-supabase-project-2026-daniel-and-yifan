@@ -1,9 +1,9 @@
 <template>
     <div id ="mainContainer">
         <h1 class="item" id="itemName">{{ props.weaponName }}</h1>
-        <h2 class="item" id="rarity">{{ props.rarity }}</h2>
+        <h2 class="item" id="rarity" v-bind:style="{color: rarityColor}">{{ props.rarity }}</h2>
         <img id="itemImg" :src="imgDir" alt=""/>
-        <h1 class="item" id="flavor">{{ props.flavorText }}</h1>
+        <h1 class="item" id="flavor" style="color: #ff4acb;">{{ props.flavorText }}</h1>
     </div>
 </template>
 
@@ -25,6 +25,10 @@ const props = defineProps({
         required: true
     },
     flavorText: {
+        type: String,
+        required: true
+    },
+    rarityColor: {
         type: String,
         required: true
     }
@@ -54,7 +58,7 @@ watchEffect(()=> {
 }
 .item{
     margin: auto;
-    margin-top: 5px;
+    margin-top: 20px;
     width: fit-content;
     text-align: center;
 }

@@ -1,12 +1,14 @@
 <template>
   
   <div id="gambleContainer">
-    <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :key="itemData.name"/>
+    <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :rarityColor="itemData.rarityColor" :key="itemData.name"/>
     <h1 id="roll" @click="doAGachaRoll()">roll</h1>
   </div>
 </template>
 
 <script setup>
+
+
 
 
 import { supabase } from '@/supabase';
@@ -18,7 +20,8 @@ const itemData = ref({
   image : null,
   name : null,
   flavor : null,
-  rarity : null
+  rarity : null,
+  rarityColor : null
 })
 
 const error = ref(null)
@@ -46,6 +49,13 @@ async function grabItems(select, equal) {
 function roll(min, max){
   let random = Math.floor(Math.random() * (max - min + 1)) + min;
   return random
+}
+
+const rarityColors = {
+  ["horrible"] : "#e82121",
+  good : "#ed9a12",
+  yeah : "#fff366",
+  great: "#edffb8"
 }
 
 const rarityMessages = {
@@ -106,6 +116,8 @@ async function doAGachaRoll(){
     itemData.value.rarity = item.rarity
     let flavorRoll = roll(0, rarityMessages[item.rarity].length - 1)
     itemData.value.flavor = rarityMessages[item.rarity][flavorRoll]
+
+    itemData.value.rarityColor = rarityColors[item.rarity]
   }
   console.log(itemData.value)
   display.value = true
@@ -140,18 +152,5 @@ async function doAGachaRoll(){
   margin-top: 3rem;
   height: 50rem;
   background-color: rgba(255, 255, 255, 0.5);
-}
-#app {
-  background-color: #ffbed7;
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e87171' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
-}
-template {
-  background-color: #ffbed7;
-}
-html {
-  background-color: white;
-}
-body {
-  background-color: brown;
 }
 </style>
