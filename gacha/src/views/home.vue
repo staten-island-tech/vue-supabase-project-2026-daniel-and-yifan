@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>johgn</h1>
-        <h1 @click="router.push('/Gacha')">click on me tpo go to gacha</h1>
+        <h1 @click="router.push('/Gacha')">click me to go tgo gacha</h1>
     </div>
 </template>
 
@@ -14,6 +14,6 @@ import { ref, onMounted } from 'vue';
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 
 </style>
