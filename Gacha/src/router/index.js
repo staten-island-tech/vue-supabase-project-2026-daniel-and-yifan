@@ -1,3 +1,4 @@
+import Enemies from '@/views/enemies.vue'
 import Gacha from '@/views/gacha.vue'
 import Home from '@/views/home.vue'
 import Login from '@/views/login.vue'
@@ -20,6 +21,11 @@ const router = createRouter({
       path: '/Login',
       name: 'login',
       component: Login,
+    },
+    {
+      path: '/Enemies',
+      name: 'enemies',
+      component: Enemies,
     }
   ],
 })
