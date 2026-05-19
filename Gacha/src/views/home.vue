@@ -8,6 +8,9 @@
 <script setup>
 
 import router from '@/router';
+import { supabase } from '@/superbase';
+import { ref, onMounted } from 'vue';
+
 
 </script>
 
