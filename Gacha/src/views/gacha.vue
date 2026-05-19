@@ -13,7 +13,7 @@
 
 import { supabase } from '@/supabase';
 import { ref, onMounted } from 'vue';
-import GachaFormat from '@/Components/GachaFormat.vue';
+import GachaFormat from '@/components/GachaFormat.vue';
 
 
 const itemData = ref({
