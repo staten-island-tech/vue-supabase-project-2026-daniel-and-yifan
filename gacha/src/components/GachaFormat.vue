@@ -40,6 +40,8 @@ watchEffect(()=> {
     if (props.img) {
         imgDir.value = `./GachaItemsIMG/${props.img}`
         console.log(props.img)
+    } else if (typeof(props.img) == "undefined") {
+        imgDir.value = null
     }
 })
 
