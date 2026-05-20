@@ -1,0 +1,66 @@
+<template>
+    <div id ="mainContainer">
+        <h1 class="item" id="itemName">{{ props.weaponName }}</h1>
+        <h2 class="item" id="rarity" v-bind:style="{color: rarityColor}">{{ props.rarity }}</h2>
+        <img id="itemImg" :src="imgDir" alt=""/>
+        <h1 class="item" id="flavor" style="color: #ff4acb;">{{ props.flavorText }}</h1>
+    </div>
+</template>
+
+<script setup>
+
+import { onMounted, ref, watchEffect } from 'vue';
+
+const props = defineProps({
+    weaponName: {
+        type: String,
+        required: true
+    },
+    img: {
+        type: String,
+        required: true
+    },
+    rarity: {
+        type: String,
+        required: true
+    },
+    flavorText: {
+        type: String,
+        required: true
+    },
+    rarityColor: {
+        type: String,
+        required: true
+    }
+})
+
+var imgDir = ref()
+
+watchEffect(()=> {
+    if (props.img) {
+        imgDir.value = `./GachaItemsIMG/${props.img}`
+        console.log(props.img)
+    }
+})
+
+</script>
+
+<style lang="css" scoped>
+
+#mainContainer{
+    margin: auto;
+    width:  50%;
+}
+#itemImg{
+    width: 70%;
+    display: block;
+    margin: auto;
+}
+.item{
+    margin: auto;
+    margin-top: 20px;
+    width: fit-content;
+    text-align: center;
+}
+
+</style>

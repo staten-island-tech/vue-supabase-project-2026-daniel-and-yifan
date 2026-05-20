@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { supabase } from '@/superbase';
+import { supabase } from '@/supabase';
 import { ref, onMounted } from 'vue';
 
 const email = ref('')
