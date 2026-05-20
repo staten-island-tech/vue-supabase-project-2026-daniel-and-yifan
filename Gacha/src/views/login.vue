@@ -11,6 +11,7 @@
 <script setup>
 import { supabase } from '@/supabase';
 import { ref, onMounted } from 'vue';
+import { userData } from '@/store';
 
 const email = ref('')
 const password = ref('')
@@ -25,13 +26,14 @@ async function handleLogin() {
       return
   }
     console.log('Login success, user:', data.user)
-  const { data: profileInfo, error: profileError } = await supabase.from("profile").select("email").eq('email',email.value).single()
+  const { data: profileInfo, error: profileError } = await supabase.from("profile").select("id").eq('email',email.value).single()
     if (profileError) {
       console.error('Cant Fetch profile:', profileError.message)
     return
   }
 
   console.log('Profile:', profileInfo)
+  userData.$id = profileInfo
 }
 </script>
 
