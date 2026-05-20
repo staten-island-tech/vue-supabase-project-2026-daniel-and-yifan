@@ -1,12 +1,13 @@
 <template>
     <div>
-        <div v-for="enemy in enemies" :key="enemy.id">HP: {{ enemy.hp }}</div>
-        <img v-for="enemy in enemies" :key="enemy.id":public="goblin.png" @click="hitEnemy(enemy.id)"/>
+        <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
+        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/goblin.png" alt="Goblin"@click="hitEnemy(enemy.id)"/>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+
 const enemies = ref([
   { id: 1, hp: 10 },
   { id: 2, hp: 10 },
