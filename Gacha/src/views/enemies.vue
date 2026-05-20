@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
-        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/goblin.png" alt="Goblin"@click="hitEnemy(enemy.id)"/>
+        <img v-for="enemy in enemies.goblin" :key="'img-' + enemy.id" src="/goblin.png" alt="Goblin"@click="hitEnemy(enemy.id)"/>
     </div>
 </template>
 
