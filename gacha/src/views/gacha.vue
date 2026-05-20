@@ -11,7 +11,7 @@
 
 
 
-import { supabase } from '@/supabase';
+import { supabase } from '@/supabase'
 import { ref, onMounted } from 'vue';
 import GachaFormat from '@/components/GachaFormat.vue';
 
