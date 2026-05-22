@@ -10,8 +10,13 @@
 
 <script setup>
 import { supabase } from '@/supabase';
-import { ref, onMounted } from 'vue';
-import { userData } from '@/store';
+import { ref, onMounted,  } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserData } from '@/store';
+
+const router = useRouter()
+
+const userData = useUserData()
 
 const email = ref('')
 const password = ref('')
@@ -32,8 +37,10 @@ async function handleLogin() {
     return
   }
 
-  console.log('Profile:', profileInfo)
-  userData.$id = profileInfo
+  
+  userData.uid = profileInfo
+  console.log('Profile:', userData.uid)
+  router.push("/Enemies")
 }
 </script>
 

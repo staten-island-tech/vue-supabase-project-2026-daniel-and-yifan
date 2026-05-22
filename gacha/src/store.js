@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
 
-export const userData = defineStore('userData', () => {
-  const uid = ref(null)
-
-  return { uid }
+export const useUserData = defineStore('userData', {
+  state: () => ({ uid: null }), //CHECK IF "UID" IS NULL, IF NOT THEN ALLOW THEM INTO OTHER PAGES, OTHERWISE LOCK THEM INTO LOGIN
 })
