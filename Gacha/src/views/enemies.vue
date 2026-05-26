@@ -1,18 +1,20 @@
 <template>
     <div>
         <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
-        <img v-for="enemy in enemies" :key="'img-' + enemy.id" public="goblin.png" alt="goblin"@click="hitEnemy(enemy.id)"/>
+        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="./enemy/goblin.png" alt="goblin"@click="hitEnemy(enemy.id)"/>
     </div>
 </template>
 
 <script setup>
+import { supabase } from '@/supabase'
 import { ref } from 'vue'
+
 
 const enemies = ref([
   { id: 1, hp: 10 },
   { id: 2, hp: 10 },
   { id: 3, hp: 10 },
-])
+]) 
 
 function hitEnemy(enemyId) {
   const enemy = enemies.value.find(e => e.id === enemyId)
