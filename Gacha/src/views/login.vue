@@ -13,10 +13,10 @@ import { supabase } from '@/supabase';
 import { ref, onMounted,  } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserData } from '@/store';
-
+const userData = useUserData()
 const router = useRouter()
 
-const userData = useUserData()
+
 
 const email = ref('')
 const password = ref('')
@@ -30,7 +30,7 @@ async function handleLogin() {
     console.error('Login Failed:', SignInError.message)
       return
   }
-    console.log('Login success, user:', data.user)
+  console.log('Login success, user:', data.user)
   const { data: profileInfo, error: profileError } = await supabase.from("profile").select("id").eq('email',email.value).single()
     if (profileError) {
       console.error('Cant Fetch profile:', profileError.message)
