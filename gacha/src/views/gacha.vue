@@ -14,6 +14,9 @@
 import { supabase } from '@/supabase'
 import { ref, onMounted } from 'vue';
 import GachaFormat from '@/components/GachaFormat.vue';
+import { useUserData } from '@/store';
+
+const userData = useUserData()
 
 
 const itemData = ref({
@@ -40,11 +43,13 @@ async function grabItems(select, equal) {
     .eq("rarity", equal)
   if (err) {
     error.value = err.message
+    console.log(error.value)
   } else {
     console.log(gachaItems)
     return gachaItems
   }
 }
+
 
 function roll(min, max){
   let random = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -105,6 +110,16 @@ async function doAGachaRoll(){
   let weaponRoll = roll(0, items.length - 1)
   console.log(items[weaponRoll])
   let item = items[weaponRoll]
+
+  const { data, error } = await supabase
+  .from('Inventories')
+  .insert([
+    { item_name: item.item_name, user_id: userData.uid, updated_at: now()},
+  ])
+  .select()
+  if (error) {
+    console.log(error.message)
+  }
 
   if (item.imglink !== null) {
     itemData.value.image = item.imglink
