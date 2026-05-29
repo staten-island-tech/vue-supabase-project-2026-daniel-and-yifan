@@ -7,14 +7,22 @@
 
 <script setup>
 import { supabase } from '@/supabase'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
-const enemies = ref([ 
-{ id: 1 , hp: 3 , maxHp: 3 , rarity: null , drops: null }, 
-{ id: 2 , hp: 5 , maxHp: 5 , rarity: null , drops: null }, 
-])
+const enemies = ref([])
 
-function hitEnemy(enemyId) {
+async function fetchEnemies () { 
+  const { data, error } = await supabase
+  .from( 'enemies' )
+  .select( 'id, hp, maxHp, rarity, drops' )
+  if (error) { 
+    console .error( 'Failed to load enemies:' , error) 
+    return 
+  }
+  enemies.value = data ?? []
+}
+
+  function hitEnemy(enemyId) {
   const enemy = enemies.value.find(e => e.id === enemyId)
   if (!enemy) return
    if (enemy.hp <= 0) {
@@ -25,7 +33,13 @@ function hitEnemy(enemyId) {
   return
   }
   enemy.hp -= 1
-}
+  if (enemy.hp <= 0 ) { 
+    enemy.hp = enemy.maxHp 
+  } 
+} onMounted( () => { 
+  fetchEnemies() 
+})
+
 </script>
 
 <style >
