@@ -48,6 +48,8 @@ async function grabItems(select, equal) {
     console.log(gachaItems)
     return gachaItems
   }
+
+  
 }
 
 
@@ -111,16 +113,29 @@ async function doAGachaRoll(){
   console.log(items[weaponRoll])
   let item = items[weaponRoll]
 
-  const { data, error } = await supabase
-  .from('Inventories')
-  .insert([
-    { item_name: item.item_name, user_id: userData.uid, updated_at: now()},
-  ])
-  .select()
-  if (error) {
-    console.log(error.message)
+  let {data: inventoryItem, error: err } = await supabase
+    .from("Inventories")
+    .select("item_id")
+    .eq("item_id", item.item_id)
+  if (err) {
+    error.value = err.message
+    console.log(error.value)
+  }
+  else {
+    console.log(inventoryItem)
   }
 
+  if (!inventoryItem || inventoryItem.length == 0) {
+    console.log("NOT DUPLICATE")
+    const { data, error } = await supabase
+      .from('Inventories')
+      .insert([{ item_name: item.item_name, user_id: userData.uid, created_at: new Date(), updated_at: new Date(), item_id: item.item_id},
+    ])
+    .select()
+    if (error) {
+      console.log(error.message)
+    }
+  }
   if (item.imglink !== null) {
     itemData.value.image = item.imglink
   }
