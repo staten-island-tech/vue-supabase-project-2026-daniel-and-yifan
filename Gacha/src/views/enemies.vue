@@ -14,7 +14,7 @@ const enemies = ref([])
 async function fetchEnemies () { 
   const { data, error } = await supabase
   .from( 'enemies' )
-  .select( 'id, hp, maxHp, rarity, drops' )
+  .select( 'id, hp, drops' )
   if (error) { 
     console .error( 'Failed to load enemies:' , error) 
     return 
@@ -22,21 +22,15 @@ async function fetchEnemies () {
   enemies.value = data ?? []
 }
 
-  function hitEnemy(enemyId) {
-  const enemy = enemies.value.find(e => e.id === enemyId)
-  if (!enemy) return
-   if (enemy.hp <= 0) {
-    enemies.value = enemies.value.filter(e => e.id !== enemyId)
-  }
-  if  (enemy.hp <= 0) {
-    enemy.hp = enemy.maxHp
-  return
-  }
-  enemy.hp -= 1
+function hitEnemy ( enemyId ) { 
+  const enemy = enemies.value.find( e => e.id === enemyId) 
+  if (!enemy) return 
+  enemy.hp -= 1 
   if (enemy.hp <= 0 ) { 
-    enemy.hp = enemy.maxHp 
-  } 
-} onMounted( () => { 
+    enemies.value = enemies.value.filter( e => 
+    e.id !== enemyId) } }
+
+    onMounted( () => { 
   fetchEnemies() 
 })
 
