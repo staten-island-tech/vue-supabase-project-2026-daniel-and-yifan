@@ -1,4 +1,4 @@
-<template>
+<template class="test">
   
   <div id="gambleContainer">
     <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :rarityColor="itemData.rarityColor" :key="itemData.name"/>
@@ -86,9 +86,9 @@ const rarityMessages = {
     ],
   ["great"] : 
     [
-      "boy if this game had microtransactions...",
+      "I would call you p2w if this game had microtransactions",
       "if only the IRS were real",
-      "gimme a fist bump right here"
+      "now something like that deserves a traditional romanian fist-bump"
     ]
 }
 
@@ -127,7 +127,7 @@ async function doAGachaRoll(){
 
   if (!inventoryItem || inventoryItem.length == 0) {
     console.log("NOT DUPLICATE")
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from('Inventories')
       .insert([{ item_name: item.item_name, user_id: userData.uid, created_at: new Date(), updated_at: new Date(), item_id: item.item_id},
     ])
@@ -159,6 +159,11 @@ async function doAGachaRoll(){
 
 
 <style lang="css" scoped>
+
+.test {
+    background-color: #ffbed7;
+background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e87171' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+}
 
 #roll{
   size: 10%;
