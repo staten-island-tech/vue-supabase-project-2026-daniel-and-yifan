@@ -2,6 +2,8 @@
     <div>
         <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
         <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/enemy/goblin.png" alt="goblin" @click="hitEnemy(enemy.id)"/>
+        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/enemy/Gold_Goblin.png" alt="gold goblin" @click="hitEnemy(enemy.id)"/>
+        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/enemy/Diamond_Goblin.png" alt="diamond goblin" @click="hitEnemy(enemy.id)"/>
     </div>
 </template>
 
@@ -14,7 +16,7 @@ const enemies = ref([])
 async function fetchEnemies () { 
   const { data, error } = await supabase
   .from( 'enemies' )
-  .select( 'id, hp, drops' )
+  .select( 'id, hp, drops, rarity' )
   if (error) { 
     console .error( 'Failed to load enemies:' , error) 
     return 
@@ -33,7 +35,6 @@ function hitEnemy ( enemyId ) {
     onMounted( () => { 
   fetchEnemies() 
 })
-
 </script>
 
 <style >
