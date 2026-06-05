@@ -1,9 +1,8 @@
 <template>
     <div>
         <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
-        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/enemy/goblin.png" alt="goblin" @click="hitEnemy(enemy.id)"/>
-        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/enemy/Gold_Goblin.png" alt="gold goblin" @click="hitEnemy(enemy.id)"/>
-        <img v-for="enemy in enemies" :key="'img-' + enemy.id" src="/enemy/Diamond_Goblin.png" alt="diamond goblin" @click="hitEnemy(enemy.id)"/>
+        <img v-for="enemy in enemies" :key="'img-' + enemy.id" :src="enemy.rarity === 'Normal' ? '/enemy/goblin.png' : enemy.rarity === 'Gold' ? '/enemy/Gold_Goblin.png' : '/enemy/Diamond_Goblin.png'" alt="goblin" @click="hitEnemy(enemy.id)" />
+
     </div>
 </template>
 
@@ -12,7 +11,7 @@ import { supabase } from '@/supabase'
 import { ref, onMounted } from 'vue'
 
 const enemies = ref([])
-
+const coins = ref(0)
 async function fetchEnemies () { 
   const { data, error } = await supabase
   .from( 'enemies' )
@@ -29,6 +28,7 @@ function hitEnemy ( enemyId ) {
   if (!enemy) return 
   enemy.hp -= 1 
   if (enemy.hp <= 0 ) { 
+    coins.value += Number(enemy.drops) || 0
     enemies.value = enemies.value.filter( e => 
     e.id !== enemyId) } }
 
@@ -38,4 +38,5 @@ function hitEnemy ( enemyId ) {
 </script>
 
 <style >
+
 </style>
