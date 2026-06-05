@@ -47,7 +47,7 @@ async function handleLogin() {
   }
 
   
-  userData.uid = profileInfo
+  userData.uid = profileInfo.id
   console.log('Profile:', userData.uid)
   router.push("/Enemies")
 }
