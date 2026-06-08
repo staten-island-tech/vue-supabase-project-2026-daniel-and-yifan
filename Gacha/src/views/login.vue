@@ -1,19 +1,17 @@
 <template>
-    <div>
+    <div id="background">
       <h1>Login</h1>
       <form @submit.prevent="handleLogin">
         <input v-model="email" type="email" placeholder="Enter your email"/>
         <input v-model="password" type="password" placeholder="Enter your password"/>
-      <button type="submit">Login</button>
-    </form>
-    </div>
-    <div>
+        <button type="submit">Login</button>
+      </form>
       <h1>Or create account.</h1>
-      <form @submit.prevent="handleRegister">
-        <input v-model="regEmail" type="emailreg" placeholder="Enter your email"/>
-        <input v-model="regPassword" type="passwordreg" placeholder="Enter your password"/>
-      <button type="submit">Register</button>
-    </form>
+        <form @submit.prevent="handleRegister">
+          <input v-model="regEmail" type="emailreg" placeholder="Enter your email"/>
+          <input v-model="regPassword" type="passwordreg" placeholder="Enter your password"/>
+        <button type="submit">Register</button>
+      </form>
     </div>
 </template>
 
@@ -66,6 +64,14 @@ async function handleRegister() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+#background {
+    background-color: #d8a61e;
+  height: 100vh;
+  position: absolute;
+  width: 100vw;
+  left: 0;
+  top:0;
+}
 
 </style>

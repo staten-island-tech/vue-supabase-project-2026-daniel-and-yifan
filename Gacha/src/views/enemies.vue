@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="background">
 
         <div id="gacha" @click="moveToGacha">GACHA</div>
     </div>
@@ -45,6 +45,15 @@ function moveToGacha() {
   line-height: 5rem;
   background-color: rgb(255, 155, 193);
   border-color: rgb(223, 130, 226);
+}
+
+#background {
+    background-color: #a3afa6;
+  height: 100vh;
+  position: absolute;
+  width: 100vw;
+  left: 0;
+  top:0;
 }
 
 </style>
