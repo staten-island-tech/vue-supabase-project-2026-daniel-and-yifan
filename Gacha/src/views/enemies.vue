@@ -12,10 +12,7 @@
 import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
-const enemies = ref([
-  { id: 1, hp: 10 },
-  { id: 2, hp: 10 },
-])
+const enemies = ref([])
 
 const coins = ref(0)
 async function fetchEnemies () { 
@@ -36,7 +33,7 @@ function moveToGacha() {
 function hitEnemy ( enemyId ) { 
   const enemy = enemies.value.find( e => e.id === enemyId) 
   if (!enemy) return 
-  enemy.hp -= 1 
+  enemy.hp -= 1
   if (enemy.hp <= 0 ) { 
     coins.value += Number(enemy.drops) || 0
     enemies.value = enemies.value.filter( e => 
