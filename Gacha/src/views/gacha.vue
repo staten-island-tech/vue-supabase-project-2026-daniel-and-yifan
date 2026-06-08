@@ -1,8 +1,12 @@
-<template>
+<template class="test">
+  <div id="background">
   
-  <div id="gambleContainer">
-    <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :rarityColor="itemData.rarityColor" :key="itemData.name"/>
-    <h1 id="roll" @click="doAGachaRoll()">roll</h1>
+    <div id="gambleContainer">
+      <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :rarityColor="itemData.rarityColor" :key="itemData.name"/>
+      <h1 id="roll" @click="doAGachaRoll()">roll</h1>
+    </div>
+
+    <div id = "return" @click="returnToEnemy">Back</div>
   </div>
 </template>
 
@@ -14,6 +18,14 @@
 import { supabase } from '@/supabase'
 import { ref, onMounted } from 'vue';
 import GachaFormat from '@/components/GachaFormat.vue';
+import { useUserData } from '@/store';
+import router from '@/router';
+
+function returnToEnemy () {
+  router.push("Enemies")
+}
+
+const userData = useUserData()
 
 
 const itemData = ref({
@@ -40,11 +52,15 @@ async function grabItems(select, equal) {
     .eq("rarity", equal)
   if (err) {
     error.value = err.message
+    console.log(error.value)
   } else {
     console.log(gachaItems)
     return gachaItems
   }
+
+  
 }
+
 
 function roll(min, max){
   let random = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -79,9 +95,9 @@ const rarityMessages = {
     ],
   ["great"] : 
     [
-      "boy if this game had microtransactions...",
+      "I would call you p2w if this game had microtransactions",
       "if only the IRS were real",
-      "gimme a fist bump right here"
+      "now something like that deserves a traditional romanian fist-bump"
     ]
 }
 
@@ -106,6 +122,29 @@ async function doAGachaRoll(){
   console.log(items[weaponRoll])
   let item = items[weaponRoll]
 
+  let {data: inventoryItem, error: err } = await supabase
+    .from("Inventories")
+    .select("user_id")
+    .match({user_id: userData.uid, item_id: item.item_id})
+  if (err) {
+    error.value = err.message
+    console.log(error.value)
+  }
+  else {
+    console.log(inventoryItem)
+  }
+
+  if (!inventoryItem || inventoryItem.length == 0) {
+    console.log("NOT DUPLICATE")
+    let { data, error } = await supabase
+      .from('Inventories')
+      .insert([{ item_name: item.item_name, user_id: userData.uid, created_at: new Date(), updated_at: new Date(), item_id: item.item_id},
+    ])
+    .select()
+    if (error) {
+      console.log(error.message)
+    }
+  }
   if (item.imglink !== null) {
     itemData.value.image = item.imglink
   }
@@ -130,6 +169,16 @@ async function doAGachaRoll(){
 
 <style lang="css" scoped>
 
+#background {
+    background-color: #ffbed7;
+background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e87171' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  height: 100vh;
+  position: absolute;
+  width: 100vw;
+  left: 0;
+  top:0;
+}
+
 #roll{
   size: 10%;
   padding: 0;
@@ -145,6 +194,26 @@ async function doAGachaRoll(){
   line-height: 5rem;
   background-color: rgb(255, 155, 193);
   border-color: rgb(223, 130, 226);
+}
+
+#return {
+  position: absolute;
+  left: 6vw;
+  top: 70vh;
+  size: 10%;
+  padding: 0;
+  width: 15rem;
+  height: 5rem;
+  border: solid;
+  text-align: center;
+  border-radius: 10px;
+  border-width: 7px;
+  line-height: 5rem;
+  background-color: rgb(255, 155, 193);
+  border-color: rgb(223, 130, 226);
+}
+body{
+  margin: 0
 }
 #gambleContainer{
   width: 60%;
