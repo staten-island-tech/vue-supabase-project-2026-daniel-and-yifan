@@ -4,7 +4,7 @@
         <div id="gacha" @click="moveToGacha">GACHA</div>
         <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
         <img v-for="enemy in enemies" :key="'img-' + enemy.id" :src="enemy.rarity === 'Normal' ? '/enemy/goblin.png' : enemy.rarity === 'Gold' ? '/enemy/Gold_Goblin.png' : '/enemy/Diamond_Goblin.png'" alt="goblin" @click="hitEnemy(enemy.id)" />
-        <div><b>Total Coins:</b> {{ coins }}</div>
+        <div><b>Total Coins:</b> {{ userData.coins }}</div>
     </div>
 </template>
 
@@ -17,7 +17,9 @@ const enemies = ref([
   { id: 2, hp: 10 },
 ])
 
-const coins = ref(0)
+import { useUserData } from '@/store'
+let userData = useUserData()
+
 async function fetchEnemies () { 
   const { data, error } = await supabase
   .from( 'enemies' )
@@ -38,7 +40,7 @@ function hitEnemy ( enemyId ) {
   if (!enemy) return 
   enemy.hp -= 1 
   if (enemy.hp <= 0 ) { 
-    coins.value += Number(enemy.drops) || 0
+    userData.coins += Number(enemy.drops) || 0
     enemies.value = enemies.value.filter( e => 
     e.id !== enemyId) } }
 
