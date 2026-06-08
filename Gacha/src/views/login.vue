@@ -66,7 +66,7 @@ async function handleRegister() {
 
 <style lang="css" scoped>
 #background {
-    background-color: #d8a61e;
+    background-color: lightblue;
   height: 100vh;
   position: absolute;
   width: 100vw;
