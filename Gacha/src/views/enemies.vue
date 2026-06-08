@@ -17,8 +17,6 @@ const enemies = ref([
   { id: 2, hp: 10 },
 ])
 
-
-const enemies = ref([])
 const coins = ref(0)
 async function fetchEnemies () { 
   const { data, error } = await supabase
