@@ -16,12 +16,22 @@
 import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
+import gsap from 'gsap'
 const enemies = ref([])
 
 import { useUserData } from '@/store'
 
 let userData = useUserData()
 const openedInv = ref(false)
+
+onMounted(()=>{
+  gsap.from("#invButton", {
+    opacity: 0,
+    duration: 0.3,
+    delay: 0
+  })
+})
+
 
 async function fetchEnemies () { 
   const { data, error } = await supabase
