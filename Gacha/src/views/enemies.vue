@@ -18,8 +18,16 @@ import router from '@/router'
 import { supabase } from '@/supabase'
 import gsap from 'gsap'
 const enemies = ref([])
+import gsap from 'gsap'
 
 import { useUserData } from '@/store'
+
+onMounted(()=>{
+  gsap.from("#invButton", {
+    opacity: 0,
+    duration: .3
+  })
+})
 
 let userData = useUserData()
 const openedInv = ref(false)

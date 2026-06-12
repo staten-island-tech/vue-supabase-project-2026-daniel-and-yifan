@@ -20,6 +20,7 @@ import { ref, onMounted } from 'vue';
 import GachaFormat from '@/components/GachaFormat.vue';
 import { useUserData } from '@/store';
 import router from '@/router';
+import gsap from 'gsap';
 
 function returnToEnemy () {
   router.push("Enemies")
@@ -104,6 +105,16 @@ const rarityMessages = {
 async function doAGachaRoll(){
   if (userData.coins < 234) {return}
   userData.coins -= 234
+
+  gsap.from("#roll", {
+    opacity: 0.3,
+    duration: 2
+  })
+  gsap.from("GachaFormat", {
+    opacity: 0.3,
+    duration: 2
+  })
+
   let rngRoll = roll(1, 100)
   let rarity
   let items

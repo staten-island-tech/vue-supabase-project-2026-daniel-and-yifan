@@ -17,7 +17,8 @@
     "@supabase/supabase-js": "^2.106.1",
     "gsap": "^3.15.0",
     "pinia": "^3.0.4",
-    "vue": "^3.5.32",
+    "supabase": "^2.106.0",
+    "vue": "^3.5.38",
     "vue-router": "^5.0.4"
   },
   "devDependencies": {
