@@ -2,13 +2,15 @@
     <div id="background">
 
         <div id="gacha" @click="moveToGacha">GACHA</div>
-        <div id="invButton" @click="openedInv = !openedInv">Inv</div>
+        <div id="invButton" @click="openInv">Inv</div>
 
         <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
         <img v-for="enemy in enemies" :key="'img-' + enemy.id" :src="enemy.rarity === 'Normal' ? '/enemy/goblin.png' : enemy.rarity === 'Gold' ? '/enemy/Gold_Goblin.png' : '/enemy/Diamond_Goblin.png'" alt="goblin" @click="hitEnemy(enemy.id)" />
         <div><b>Total Coins:</b> {{ userData.coins }}</div>
 
-        <div id="inventory" v-if="openedInv"></div>
+        <div id="inventory" v-if="openedInv">
+          <Itemslot v-for="item in foundItems" :key="item.item_id"></Itemslot>
+        </div>
     </div>
 </template>
 
@@ -16,18 +18,11 @@
 import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
+import Itemslot from '@/components/Itemslot.vue'
 import gsap from 'gsap'
 const enemies = ref([])
-import gsap from 'gsap'
 
 import { useUserData } from '@/store'
-
-onMounted(()=>{
-  gsap.from("#invButton", {
-    opacity: 0,
-    duration: .3
-  })
-})
 
 let userData = useUserData()
 const openedInv = ref(false)
@@ -40,9 +35,43 @@ onMounted(()=>{
   })
 })
 
+const foundItems = ref([])
+
+async function openInv () {
+  openedInv.value = !openedInv.value
+
+  let {data: invData, error1} = await supabase
+  .from( "Inventories")
+  .select("*")
+  .match({user_id : userData.uid})
+  if (error1) {
+    console.log(error1.message)
+  }
+  console.log(invData)
+
+  let {data: itemList, error2} = await supabase
+  .from( "gachaItems")
+  .select("*")
+  if (error2) {
+    console.log(error2.message)
+  }
+
+  console.log(itemList)
+
+  invData.forEach(invItem => {
+    itemList.forEach(listItem => {
+      if (invItem.item_id == listItem.item_id) {
+        foundItems.value.push(listItem)
+      }
+    });
+  });
+  console.log(foundItems.value)
+
+
+}
 
 async function fetchEnemies () { 
-  const { data, error } = await supabase
+  let { data, error } = await supabase
   .from( 'enemies' )
   .select( 'id, hp, drops, rarity' )
   if (error) { 
@@ -108,10 +137,10 @@ function hitEnemy ( enemyId ) {
 
 #inventory{
   position: absolute;
-  left: 10vw;
+  left: 25vw;
   top: 60vh;
   background-color: brown;
-  width: 80vw;
+  width: 50vw;
   height: 30vh;
 }
 

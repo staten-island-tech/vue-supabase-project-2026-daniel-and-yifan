@@ -110,10 +110,6 @@ async function doAGachaRoll(){
     opacity: 0.3,
     duration: 2
   })
-  gsap.from("GachaFormat", {
-    opacity: 0.3,
-    duration: 2
-  })
 
   let rngRoll = roll(1, 100)
   let rarity
