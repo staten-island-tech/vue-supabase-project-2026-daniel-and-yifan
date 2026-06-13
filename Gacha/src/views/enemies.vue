@@ -28,7 +28,7 @@
               <img id="weaponImg" v-if="userData.equippedWeapon" :src="userData.weaponImg" alt="">
             </div>
           </div>
-          <h3 id="calculated">Total Calculated: {{ userData.calculatedDamage.toFixed(1) }} DMG</h3>
+          <h3 id="calculated">Total Calculated: {{ userData.calculatedDamage }} DMG</h3>
         </div>
         
         <div id="inventory">
@@ -174,7 +174,7 @@ function moveToGacha() {
 function hitEnemy ( enemyId ) { 
   const enemy = enemies.value.find( e => e.id === enemyId) 
   if (!enemy) return 
-  enemy.hp -= userData.calculatedDamage
+  enemy.hp = (enemy.hp - userData.calculatedDamage).toFixed(1)
   if (enemy.hp <= 0 ) { 
     userData.coins += Number(enemy.drops) || 0
     enemies.value = enemies.value.filter( e => 

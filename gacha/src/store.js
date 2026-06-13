@@ -13,7 +13,7 @@ export const useUserData = defineStore('userData', {
     const mult = state.equippedChar?.multiplier ?? 1
     const atk = state.equippedWeapon?.attack ?? 1
 
-    return mult * atk
+    return (mult * atk).toFixed(1)
     },
     charImg: (state) => {
       const charImgLink = state.equippedChar?.imglink
