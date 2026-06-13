@@ -35,12 +35,14 @@ async function handleLogin() {
   })
   if (SignInError){
     console.error('Login Failed:', SignInError.message)
+    alert(SignInError.message)
       return
   }
   console.log('Login success, user:', data.user)
-  const { data: profileInfo, error: profileError } = await supabase.from("profile").select("id").eq('email',email.value).single()
+  const { data: profileInfo, error: profileError } = await supabase.from("profile").select("id").eq('email', email.value).single()
     if (profileError) {
       console.error('Cant Fetch profile:', profileError.message)
+      alert(profileError.message)
     return
   }
 
@@ -57,6 +59,7 @@ async function handleRegister() {
   })
   if (error) {
     console.error('Signup Failed:', error.message)
+    alert(error.message)
     return
   }
   console.log('Login success, user:', data.user)
