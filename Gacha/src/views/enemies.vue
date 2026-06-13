@@ -16,14 +16,14 @@
         <div id="equips">
           <div id="char">
             <h3 id="charMult">x{{ userData.equippedChar && userData.equippedChar.multiplier || 0 }} ATK</h3>
-            <h3 id="charText">Char</h3>
+            <h3 id="charText">{{ userData.equippedChar?.tr_name ?? "Char" }}</h3>
             <div id="charContainer" @click="setChar">
               <img id="charImg" v-if="userData.equippedChar" :src="userData.charImg" alt="">
             </div>
           </div>
           <div id="weapon">
             <h3 id="weaponAttack">+{{ userData.equippedWeapon  && userData.equippedWeapon.attack || 1 }} ATK</h3>
-            <h3 id="weaponText">Weapon</h3>
+            <h3 id="weaponText">{{ userData.equippedWeapon?.tr_name ?? "Weapon" }}</h3>
             <div id="weaponContainer" @click="setWeapon">
               <img id="weaponImg" v-if="userData.equippedWeapon" :src="userData.weaponImg" alt="">
             </div>
