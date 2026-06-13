@@ -3,7 +3,7 @@
   
     <div id="gambleContainer">
       <GachaFormat v-if="display" :weaponName="itemData.name" :img="itemData.image" :flavorText="itemData.flavor" :rarity="itemData.rarity" :rarityColor="itemData.rarityColor" :key="itemData.name"/>
-      <h1 id="roll" @click="doAGachaRoll()">roll</h1>
+      <h1 id="roll" @click="doAGachaRoll()">roll (234 coins)</h1>
     </div>
 
     <div id = "return" @click="returnToEnemy">Back</div>
@@ -20,6 +20,7 @@ import { ref, onMounted } from 'vue';
 import GachaFormat from '@/components/GachaFormat.vue';
 import { useUserData } from '@/store';
 import router from '@/router';
+import gsap from 'gsap';
 
 function returnToEnemy () {
   router.push("Enemies")
@@ -102,6 +103,14 @@ const rarityMessages = {
 }
 
 async function doAGachaRoll(){
+  if (userData.coins < 234) {return}
+  userData.coins -= 234
+
+  gsap.from("#roll", {
+    opacity: 0.3,
+    duration: 2
+  })
+
   let rngRoll = roll(1, 100)
   let rarity
   let items
@@ -177,6 +186,7 @@ background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox=
   width: 100vw;
   left: 0;
   top:0;
+  font-family: Consolas;
 }
 
 #roll{
@@ -194,6 +204,7 @@ background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox=
   line-height: 5rem;
   background-color: rgb(255, 155, 193);
   border-color: rgb(223, 130, 226);
+  font-size: large;
 }
 
 #return {
@@ -211,6 +222,7 @@ background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox=
   line-height: 5rem;
   background-color: rgb(255, 155, 193);
   border-color: rgb(223, 130, 226);
+  font-family: Consolas;
 }
 body{
   margin: 0
