@@ -2,6 +2,7 @@
     <div id="background">
       <div id="gacha" @click="moveToGacha">GACHA</div>
       <div id="invButton" @click="openInv">Inv</div>
+      <div id="profile"></div>
 
       <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
       <img v-for="enemy in enemies" :key="'img-' + enemy.id" 
@@ -77,7 +78,6 @@ function setWeapon () {
     if (userData.equippedWeapon && userData.equippedWeapon.item_id == selectedItem.value.item_id) {
       userData.equippedWeapon = null
       selectedItem.value = null
-      
     } else {
     userData.equippedWeapon = selectedItem.value
     console.log("char set")
