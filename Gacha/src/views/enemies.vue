@@ -52,8 +52,9 @@
 import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
-import Itemslot from '@/components/Itemslot.vue'
 import gsap from 'gsap'
+import Itemslot from '@/components/Itemslot.vue'
+
 const enemies = ref([])
 
 import { useUserData } from '@/store'
@@ -156,6 +157,7 @@ async function openInv () {
 
 }
 
+const originalHP = ref({})
 async function fetchEnemies () { 
   let { data, error } = await supabase
   .from( 'enemies' )
@@ -164,7 +166,10 @@ async function fetchEnemies () {
     console .error( 'Failed to load enemies:' , error) 
     return 
   }
-  enemies.value = data ?? []
+  enemies.value = (data ?? []).map(e => ({ ...e, dead: false }))
+  enemies.value.forEach(e => {
+    originalHP.value[e.id] = e.hp
+  })
 }
 
 function moveToGacha() {
@@ -174,14 +179,27 @@ function moveToGacha() {
 function hitEnemy ( enemyId ) { 
   const enemy = enemies.value.find( e => e.id === enemyId) 
   if (!enemy) return 
-  enemy.hp = (enemy.hp - userData.calculatedDamage).toFixed(1)
+  if (enemy.dead) return 
+  enemy.hp -= userData.calculatedDamage
   if (enemy.hp <= 0 ) { 
     userData.coins += Number(enemy.drops) || 0
-    enemies.value = enemies.value.filter( e => 
-    e.id !== enemyId) } }
+    enemy.dead = true
+    const respawnSeconds = 10
+    enemy.respawnTimer = respawnSeconds
+    const interval = setInterval(() => {
+      enemy.respawnTimer -= 1
+      if (enemy.respawnTimer <= 0) {
+        clearInterval(interval)
+        enemy.hp = originalHP.value[enemyId] ?? 10
+        enemy.dead = false
+        delete enemy.respawnTimer
+      }
+    }, 1000)
+  }
+}
 
-    onMounted( () => { 
-  fetchEnemies() 
+    onMounted( () => {
+  fetchEnemies()
 })
 </script>
 
