@@ -51,10 +51,12 @@
 import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
-import Itemslot from '@/components/Itemslot.vue'
+import { useUserData } from '@/store'
+
 const enemies = ref([])
 const originalHP = ref({})
-const coins = ref(0)
+let userData = useUserData()
+
 async function fetchEnemies () { 
   let { data, error } = await supabase
   .from( 'enemies' )
@@ -77,9 +79,9 @@ function hitEnemy ( enemyId ) {
   const enemy = enemies.value.find( e => e.id === enemyId) 
   if (!enemy) return 
   if (enemy.dead) return 
-  enemy.hp -= 1
+  enemy.hp -= userData.calculatedDamage
   if (enemy.hp <= 0 ) { 
-    coins.value += Number(enemy.drops) || 0
+    userDatacoins += Number(enemy.drops) || 0
     enemy.dead = true
     const respawnSeconds = 10
     enemy.respawnTimer = respawnSeconds
