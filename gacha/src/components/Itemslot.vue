@@ -1,4 +1,3 @@
-@ -1,120 +0,0 @@
 <template>
     <div id= "imgContainer" :class="{selected: selected, equipped: equipped, default: !selected && !equipped}" ref="imgContainer">
       <img id="itemImg" :src="imgDir" alt=""/>
