@@ -51,111 +51,9 @@
 import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
-import Itemslot from '@/components/Itemslot.vue'
-import gsap from 'gsap'
 const enemies = ref([])
-
-import { useUserData } from '@/store'
-
-let userData = useUserData()
-const openedInv = ref(false)
-const selectedItem = ref(null)
-const foundItems = ref([])
-
-function selectItem (item) {
-  console.log("Clicked")
-  if (selectedItem.value && selectedItem.value.item_id == item.item_id){
-    selectedItem.value = null
-    console.log("cleared selection")
-  } else {
-    selectedItem.value = item
-  }
-}
-
-function setWeapon () {
-  if (selectedItem.value && selectedItem.value.TYPE == "WEAPON") {
-    if (userData.equippedWeapon && userData.equippedWeapon.item_id == selectedItem.value.item_id) {
-      userData.equippedWeapon = null
-      selectedItem.value = null
-      
-    } else {
-    userData.equippedWeapon = selectedItem.value
-    console.log("char set")
-    selectedItem.value = null
-    }
-  } else if (!selectedItem.value && userData.equippedWeapon) {
-    userData.equippedWeapon = null
-  }
-}
-
-function setChar() {
-  if (selectedItem.value && selectedItem.value.TYPE == "CHAR") {
-    if (userData.equippedChar && userData.equippedChar.item_id == selectedItem.value.item_id) {
-      userData.equippedChar = null
-      selectedItem.value = null
-    } else {
-    userData.equippedChar = selectedItem.value
-    console.log("char set")
-    selectedItem.value = null
-    }
-  } else if (!selectedItem.value && userData.equippedChar) {
-    userData.equippedChar = null
-  }
-}
-
-async function openInv () {
-  openedInv.value = !openedInv.value
-
-  if (openedInv.value == false) {
-    foundItems.value = []
-    userData.itemIndex = 0
-    return
-  }
-
-  else
-  
-  {
-  gsap.from("#inventory", {
-    duration: 0.2,
-    opacity: 0,
-    y: -600,
-    yoyo: true
-  })
-
-  gsap.from("#equips", {
-    duration: 0.2,
-    opacity: 0
-  })
-  let {data: invData, error1} = await supabase
-  .from( "Inventories")
-  .select("*")
-  .match({user_id : userData.uid})
-  if (error1) {
-    console.log(error1.message)
-  }
-  console.log(invData)
-
-  let {data: itemList, error2} = await supabase
-  .from( "gachaItems")
-  .select("*")
-  if (error2) {
-    console.log(error2.message)
-  }
-
-  console.log(itemList)
-
-  invData.forEach(invItem => {
-    itemList.forEach(listItem => {
-      if (invItem.item_id == listItem.item_id) {
-        foundItems.value.push(listItem)
-      }
-    });
-  });
-  console.log(foundItems.value)
-  }
-
-}
-
+const originalHP = ref({})
+const coins = ref(0)
 async function fetchEnemies () { 
   let { data, error } = await supabase
   .from( 'enemies' )
@@ -164,7 +62,10 @@ async function fetchEnemies () {
     console .error( 'Failed to load enemies:' , error) 
     return 
   }
-  enemies.value = data ?? []
+  enemies.value = (data ?? []).map(e => ({ ...e, dead: false }))
+  enemies.value.forEach(e => {
+    originalHP.value[e.id] = e.hp
+  })
 }
 
 function moveToGacha() {
@@ -174,14 +75,27 @@ function moveToGacha() {
 function hitEnemy ( enemyId ) { 
   const enemy = enemies.value.find( e => e.id === enemyId) 
   if (!enemy) return 
-  enemy.hp = (enemy.hp - userData.calculatedDamage).toFixed(1)
+  if (enemy.dead) return 
+  enemy.hp -= 1
   if (enemy.hp <= 0 ) { 
-    userData.coins += Number(enemy.drops) || 0
-    enemies.value = enemies.value.filter( e => 
-    e.id !== enemyId) } }
+    coins.value += Number(enemy.drops) || 0
+    enemy.dead = true
+    const respawnSeconds = 10
+    enemy.respawnTimer = respawnSeconds
+    const interval = setInterval(() => {
+      enemy.respawnTimer -= 1
+      if (enemy.respawnTimer <= 0) {
+        clearInterval(interval)
+        enemy.hp = originalHP.value[enemyId] ?? 10
+        enemy.dead = false
+        delete enemy.respawnTimer
+      }
+    }, 1000)
+  }
+}
 
-    onMounted( () => { 
-  fetchEnemies() 
+    onMounted( () => {
+  fetchEnemies()
 })
 </script>
 
