@@ -51,6 +51,7 @@
 import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
+
 const enemies = ref([])
 const originalHP = ref({})
 const coins = ref(0)
