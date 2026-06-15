@@ -1,10 +1,49 @@
 <template>
     <div id="background">
+      <div id="gacha" @click="moveToGacha">GACHA</div>
+      <div id="invButton" @click="openInv">Inv</div>
 
-        <div id="gacha" @click="moveToGacha">GACHA</div>
-        <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
-        <img v-for="enemy in enemies" :key="'img-' + enemy.id" :src="enemy.rarity === 'Normal' ? '/enemy/goblin.png' : enemy.rarity === 'Gold' ? '/enemy/Gold_Goblin.png' : '/enemy/Diamond_Goblin.png'" alt="goblin" @click="hitEnemy(enemy.id)" />
-        <div><b>Total Coins:</b> {{ coins }}</div>
+      <div v-for="enemy in enemies" :key="'hp-' + enemy.id">HP: {{ enemy.hp }}</div>
+      <img v-for="enemy in enemies" :key="'img-' + enemy.id" 
+        :src="enemy.rarity === 'Normal' ? '/enemy/goblin.png' : enemy.rarity === 'Gold' ? '/enemy/Gold_Goblin.png' : '/enemy/Diamond_Goblin.png'" 
+        alt="goblin" 
+        @click="hitEnemy(enemy.id)" 
+      />
+      <div><b>Total Coins:</b> {{ userData.coins }}</div>
+
+
+      <div id="ui" v-show="openedInv">
+        <div id="equips">
+          <div id="char">
+            <h3 id="charMult">x{{ userData.equippedChar && userData.equippedChar.multiplier || 0 }} ATK</h3>
+            <h3 id="charText">{{ userData.equippedChar?.tr_name ?? "Char" }}</h3>
+            <div id="charContainer" @click="setChar">
+              <img id="charImg" v-if="userData.equippedChar" :src="userData.charImg" alt="">
+            </div>
+          </div>
+          <div id="weapon">
+            <h3 id="weaponAttack">+{{ userData.equippedWeapon  && userData.equippedWeapon.attack || 1 }} ATK</h3>
+            <h3 id="weaponText">{{ userData.equippedWeapon?.tr_name ?? "Weapon" }}</h3>
+            <div id="weaponContainer" @click="setWeapon">
+              <img id="weaponImg" v-if="userData.equippedWeapon" :src="userData.weaponImg" alt="">
+            </div>
+          </div>
+          <h3 id="calculated">Total Calculated: {{ userData.calculatedDamage }} DMG</h3>
+        </div>
+        
+        <div id="inventory">
+          <Itemslot v-if="openedInv" v-for="item in foundItems" @click="selectItem(item)" 
+            :key="item.item_id"
+            :img-link="item.imglink"
+            :item-rarity="item.rarity"
+            :item-stat="item.attack || item.multiplier"
+            :index="userData.itemIndex"
+            :item-type="item.TYPE"
+            :selected="!!selectedItem && selectedItem.item_id == item.item_id"
+            :equipped="(!!userData.equippedWeapon && userData.equippedWeapon.item_id == item.item_id) || (!!userData.equippedChar && userData.equippedChar.item_id == item.item_id)"
+          ></Itemslot>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -16,7 +55,7 @@ const enemies = ref([])
 const originalHP = ref({})
 const coins = ref(0)
 async function fetchEnemies () { 
-  const { data, error } = await supabase
+  let { data, error } = await supabase
   .from( 'enemies' )
   .select( 'id, hp, drops, rarity' )
   if (error) { 
@@ -64,7 +103,7 @@ function hitEnemy ( enemyId ) {
 
 #gacha{
   position: absolute;
-  left: 70%;
+  left: 76%;
   top: 70%;
   size: 10%;
   padding: 0;
@@ -79,12 +118,108 @@ function hitEnemy ( enemyId ) {
   border-color: rgb(223, 130, 226);
 }
 
+#invButton{
+  position: absolute;
+  left: 76%;
+  top: 50%;
+  size: 10%;
+  padding: 0;
+  width: 15rem;
+  height: 5rem;
+  border: solid;
+  text-align: center;
+  border-radius: 10px;
+  border-width: 7px;
+  line-height: 5rem;
+  background-color: rgb(255, 155, 193);
+  border-color: rgb(223, 130, 226);
+}
+
+#equips{
+  display: flex;
+  flex-direction: row;
+}
+
+#inventory{
+  
+  background-color: rgb(118, 46, 31);
+  
+  overflow: scroll;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: solid;
+  border-color: rgb(135, 160, 222);
+  height: 30vh;
+  pointer-events:visible;
+}
+
+#char{
+  width: 120px;
+  margin-right: 9px;
+  
+}
+
+#calculated{
+  align-self: flex-end;
+  margin: 0px 18px;
+}
+
+#weapon{
+  width: 120px;
+}
+
+h3{
+  padding:0%;
+  margin: 0;
+}
+
+#weaponText{
+  padding:0%;
+  margin: 0;
+}
+
+#charContainer{
+  background-color: rgb(47, 14, 77);
+  border: solid;
+  border-color: rgb(79, 92, 169);
+  border-width: 6px;
+  width: 100%;
+  height: 120px;
+  border-right-width: 3px;
+}
+
+#weaponContainer{
+  background-color: rgb(38, 31, 118);
+  border: solid;
+  border-color: rgb(79, 92, 169);
+  border-width: 6px;
+  width: 100%;
+  height: 120px;
+  border-left-width: 3px;
+}
+
+#charImg {
+  width: 100%;
+}
+#weaponImg {
+  width: 100%;
+}
+
+#ui{
+  position: absolute;
+  left: 25vw;
+  top: 40vh;
+  width: 50vw;
+}
+
 #background {
-    background-color: #a3afa6;
+  background-color: #a3c3ab;
   height: 100vh;
   position: absolute;
   width: 100vw;
   left: 0;
   top:0;
+  font-family: Consolas;
 }
 </style>
