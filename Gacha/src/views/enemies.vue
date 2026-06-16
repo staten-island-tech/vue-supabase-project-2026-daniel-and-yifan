@@ -51,7 +51,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import router from '@/router'
-import { supabase } from '@/supabase'
+import { supabase } from '@/supabase.js'
 import gsap from 'gsap'
 import Itemslot from '@/components/Itemslot.vue'
 
