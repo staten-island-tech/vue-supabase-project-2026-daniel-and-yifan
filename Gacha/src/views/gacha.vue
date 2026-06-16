@@ -15,10 +15,10 @@
 
 
 
-import { supabase } from '@/supabase'
+import { supabase } from "@/supabase"
 import { ref, onMounted } from 'vue';
-import GachaFormat from '@/components/GachaFormat';
-import { useUserData } from '@/store';
+import GachaFormat from "@/Components/GachaFormat.vue";
+import { useUserData } from "@/store";
 import router from '@/router';
 import gsap from 'gsap';
 

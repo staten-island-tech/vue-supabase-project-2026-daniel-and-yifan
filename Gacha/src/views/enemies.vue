@@ -53,7 +53,7 @@ import { ref, onMounted } from 'vue'
 import router from '@/router'
 import { supabase } from '@/supabase'
 import gsap from 'gsap'
-import Itemslot from '@/components/Itemslot.vue'
+import Itemslot from '@/Components/Itemslot.vue'
 
 const enemies = ref([])
 
